@@ -58,10 +58,10 @@ if (isset($_POST['submit'])) {
                 $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 25;                                    // TCP port to connect to
                 //Recipients
-                $mail->setFrom('no-reply@ss-php-02.sumon', 'SSB PHP 02');
+                $mail->setFrom('no-reply@example.com', 'Mailer');
                 $mail->addAddress($email);
                 $mail->isHTML();                                  // Set email format to HTML
-                $mail->Subject = '[SSB02] Verify Your Account';
+                $mail->Subject = ' Verify Your Account';
                 $mail->Body = 'Dear user, please click the following link to activate your account:<br/>
                 <a href="http://project.bappy/projectcrud/CRUD/activate.php?token=' . $email_verification_token . '">http://project.bappy/projectcrud/CRUD/activate.php?token=' . $email_verification_token . '</a>
                 ';
@@ -78,6 +78,6 @@ if (isset($_POST['submit'])) {
         }
     } else {
         notification('Please provide all the required information', 'danger');
-        redirect('index');
+        redirect('add');
     }
 }
