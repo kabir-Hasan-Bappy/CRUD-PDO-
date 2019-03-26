@@ -1,92 +1,52 @@
-<?php
-if (isset($_POST['login'])) {
 
-  $email= $_POST['email'];
-  $password= trim($_POST['password']);
-
-  require_once 'connection.php';
-
-  $q= 'SELECT id, email, password FROM customers WHERE email=:email';
-  $stmt= $con->prepare($q);
-  $stmt-> bindParam(':email', $email);
-  $stmt->execute();
-
-  $customer= $stmt->fetch();
-  
-  if ($customer) {
-    if (md5($password, $customer['password'])==true) {
-
-    $message="log in Successfull";
-    # code...
-  }
-  else{
-    $message= "invalid password";
-  }
-  
-    # code...
-  }
-  else{
-    $message= 'Email doesnot exist';
-  }
-
+<?php 
+  require_once"bootstarp.php";
+if(is_logged_in()){
+    redirect("dashboard");
     
 }
-
-
 ?>
+<?php require_once 'partials/_header.php';?>
+
+ <div class="container py-5 border" >
 
 
-<!doctype html>
-<html lang="en">
-<head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <?php require_once 'partials/_message.php';?>
 
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	
-    <title>User Log in </title>
-</head>
-<body>
-   <div class="container py-5 border">
+  <div class="panel panel-default">
+   <div class="panel-heading">
+    <h3 class="py-3">  Customer Login <a style="float:right" href="index.php"> Back</a></h3>
+    <div class="panel-body">
+      <div class="card col-md-10 ml-5" >
+        <div class="card-body">
+      <form action="login_sql.php" method="post" class="form-group" >
 
 
-    <?php if (isset($message)): ?>
-
-    <div class="alert alert-success">
-
-        <?php echo $message; ?>
-
-    </div>
-    <?php endif; ?>
-    <div class="panel panel-default">
-     <div class="panel-heading">
-        <h3 class="py-3">  Customer Login <a style="float:right" href="index.php"> Back</a></h3>
-        <div class="panel-body">
-            <form action="" method="post" class="form-group" enctype="multipart/form-data">
-                
-
-              <div class="form-group">
-                <label for="">Email: </label>
-                    <input type="email" class="form-control" name="email" required="Please fill up">
-                </div>
-
-                <div class="form-group">
-                    <label for="">Password: </label>
-                    <input type="password" class="form-control" name="password" required="Please fill up">
-                </div>
-
-                
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-center" class="form-control" name="login" value="Log In" onclick="return msg()" />       
-                </div>
-
-            </form>
+        <div class="form-group">
+          <label for="">Email: </label>
+          <input type="email" class="form-control" name="email" required="Please fill up">
         </div>
 
+        <div class="form-group">
+          <label for="">Password: </label>
+          <input type="password" class="form-control" name="password" >
+        </div>
+
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary btn-center" class="form-control" name="login" value="Log In" onclick="return msg()" />  
+
+          <hr>
+          <a href="add.php">Sign Up</a>     
+        </div>
+
+      </form>
+      </div>
+      </div>
     </div>
+
+  </div>
 </div>
 </div>
+
+<?php require_once 'partials/_footer.php';?>

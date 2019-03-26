@@ -1,0 +1,17 @@
+{
+    "name": "user/crud",
+    "authors": [
+        {
+            "name": "Bappy",
+            "email": "dmsbappy@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.0"
+    },
+    "autoload": {
+    	"files": [
+    		"helpers/function.php"
+    	]
+    }
+}

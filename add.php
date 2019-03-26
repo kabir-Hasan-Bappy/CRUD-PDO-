@@ -1,88 +1,25 @@
 <?php
-if (isset($_POST['submit'])) {
-    if (!empty($_FILES['photo']['name'])) {
 
-        $file = $_FILES['photo']['tmp_name'];
-        $file_parts = explode('.', $_FILES['photo']['name']);
-        $extension = end($file_parts);
-        $photo = uniqid('photo_', true) .time() . '.' . $extension;
-        $destination = 'upload/pic/' .  $photo;
+  require_once 'bootstarp.php';
 
-  //die($filename);
-        move_uploaded_file($file, $destination);
+if (is_logged_in()) {
+    redirect('dashboard');
+  }
+  
 
-    }
-
-
-    if (!empty($_POST['email']) || !empty($_POST['password'])) {
-
-        require_once 'connection.php';
-
-        
-        $name= trim($_POST['name']);
-        $gender= $_POST['gender'];
-        $email= trim($_POST['email']);
-        $password=$_POST['password'];
-        $password = md5($password);
-
-
-        try{
-
-            $query= 'INSERT INTO customers(name,gender,email,password,photo) VALUES (:name,:gender,:email,:password,:photo)';
-
-            $stmt= $con->prepare($query);
-            $stmt-> bindParam(':name', $name);
-            $stmt-> bindParam(':gender', $gender);
-            $stmt-> bindParam(':email', $email);
-            $stmt-> bindParam(':password', $password);
-            $stmt-> bindParam(':photo', $photo);
-            $stmt-> execute();
-            $con ->lastInsertId();
-
-            $message= "Registration Successfull";
-
-        }
-
-        catch(Exception $e){
-            $message= $e->getmessage();
-        }
-
-
-    }   
-}
-
+ require_once 'partials/_header.php';
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	
-    <title>CRUD OPERATION </title>
-</head>
-<body>
    <div class="container py-5 border">
 
 
-    <?php if (isset($message)): ?>
+  <?php  require_once 'partials/_message.php'; ?>
 
-    <div class="alert alert-success">
-
-        <?php echo $message; ?>
-
-    </div>
-    <?php endif; ?>
     <div class="panel panel-default">
      <div class="panel-heading">
         <h3 class="py-3"> Add Customer <a style="float:right" href="index.php"> Back</a></h3>
         <div class="panel-body">
-            <form action="" method="post" class="form-group" enctype="multipart/form-data">
+            <form action="register.php" method="post" class="form-group" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="">Customer Name: </label>
                     <input type="text" class="form-control" name="name" required="Please fill up">
@@ -112,7 +49,9 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-center" class="form-control" name="submit" value="Add" onclick="return msg()" />       
+                    <input type="submit" class="btn btn-primary btn-center" class="form-control" name="submit" value="Add" onclick="return msg()" />  
+                    <hr>
+          <a href="login.php">Sign In</a>       
                 </div>
 
             </form>
@@ -128,3 +67,4 @@ if (isset($_POST['submit'])) {
     }
 
 </script> -->
+<?php require_once 'partials/_footer.php';?>
