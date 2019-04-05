@@ -1,11 +1,17 @@
 <?php
 require_once 'bootstarp.php';
+
+
 if (!is_logged_in()) {
     notification('You have to login first.', 'danger');
     redirect('login');
-    $id= (int)($_SESSION['id']);
+
 }
 if (isset($_POST['edit'])) {
+    // print_r($_POST);
+    // exit();
+    $id= $_POST['cusid'];
+   
     if (!empty($_FILES['photo']['name'])) {
         $file = $_FILES['photo']['tmp_name'];
         $file_parts = explode('.', $_FILES['photo']['name']);
@@ -27,6 +33,16 @@ if (isset($_POST['edit'])) {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
+
+    if (!empty($_POST['password'])) {
+        $password = trim($_POST['password']);
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        $query = 'UPDATE customers SET password=:password WHERE id=:id';
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
     if (!empty($_POST['name'])) {
         $name = trim($_POST['name']);
         $query = 'UPDATE customers SET name=:name WHERE id=:id';
@@ -35,6 +51,6 @@ if (isset($_POST['edit'])) {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
     }
-    notification('User updated.');
+    notification('Profile  updated.');
     redirect('edit');
 }

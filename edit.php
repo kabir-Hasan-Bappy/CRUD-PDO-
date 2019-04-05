@@ -4,13 +4,21 @@ if (!is_logged_in()) {
     notification('You have to login first.', 'danger');
     redirect('login');
 }
+if (isset($_SESSION['id'])) {
+    # code...
+
 $id = (int)$_SESSION['id'];
-$query = 'SELECT name, email, photo FROM customers WHERE id=:id';
+$query = 'SELECT id, name, email, photo FROM customers WHERE id=:id';
 $stmt = $con->prepare($query);
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$customer = $stmt->fetch();
+$customer = $stmt->fetch();}
 require_once 'partials/_header.php';
+
+
+// if ($id === 0) {
+//     header('Location: index.php');
+// }
 ?>
 
 
@@ -22,13 +30,16 @@ require_once 'partials/_header.php';
 
 
  <div class="panel panel-default">
-     <?php require_once 'partials/_message.php';?>
      <div class="panel-heading">
+      <?php  require_once 'partials/_message.php';?>
+
         <h3 class="py-3"> Update Customer <a style="float:right" href="dashboard.php"> Back</a></h3>
         <div class="panel-body">
-            <form action="edit_user.php" method="post" class="form-group" enctype="multipart/form-data">
+            <form action="edit_profile.php" method="post" class="form-group" enctype="multipart/form-data">
+
                 <div class="form-group">
                     <label for="">Customer Name: </label>
+                    <input type="hidden" value="<?php echo $customer['id'];?>" class="form-control" name="cusid" required="Please fill up">
                     <input type="text" value="<?php echo $customer['name'];?>" class="form-control" name="name" required="Please fill up">
                 </div>
 
@@ -38,6 +49,10 @@ require_once 'partials/_header.php';
                     <input type="email" class="form-control" value="<?php echo $customer['email'];?>" name="email" required="Please fill up">
                 </div>
                 <!--  -->
+                 <div class="form-group">
+                    <label for="">Password: </label>
+                    <input type="text"  class="form-control" name="password" required="Please fill up">
+                </div>
 
 
                 <div class="form-group">
@@ -47,7 +62,7 @@ require_once 'partials/_header.php';
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-center" class="form-control" name="edit" value="Update User" onclick="return msg()" />       
+                    <input type="submit" class="btn btn-primary btn-center" class="form-control" name="edit" value="Edit Profile" onclick="return msg()" />       
                 </div>
 
             </form>
