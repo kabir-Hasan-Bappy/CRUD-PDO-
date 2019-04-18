@@ -11,7 +11,7 @@ if (isset($_POST['login'])) {
   $email= $_POST['email'];
   $password= trim($_POST['password']);
 
-  $query= 'SELECT id, name, email, password, photo, role FROM customers WHERE email=:email';
+  $query= 'SELECT id, name, email, password, photo, role, email_verified FROM customers WHERE email=:email';
   $stmt= $con->prepare($query);
   $stmt-> bindParam(':email', $email);
   $stmt->execute();
@@ -20,6 +20,11 @@ if (isset($_POST['login'])) {
   
   if ($customer) {
     if (password_verify($password, $customer['password'])==true) {
+
+       if ((int)$customer['email_verified'] === 0) {
+                notification('Verify your email.', 'danger');
+                redirect('login');
+            }
 
       $message="log in Successfull";
       $_SESSION['id']= $customer['id'];

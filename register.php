@@ -53,15 +53,17 @@ if (isset($_POST['submit'])) {
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.mailtrap.io';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $mail->Username = 'c8eb42b503f0ae';                 // SMTP username
-                $mail->Password = 'fc96e9f5e7b263';                           // SMTP password
-                $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-                $mail->Port = 25;                                    // TCP port to connect to
+                $mail->Username = '516058cc1463ef';                 // SMTP username
+                $mail->Password = '76503177314933';                           // SMTP password
+                // $mail->SMTPSecure = 'tls';  
+                $mail->SMTPSecure = false;
+                $mail->SMTPAutoTLS = false;                          // Enable TLS encryption, `ssl` also accepted
+                $mail->Port = 465;                                    // TCP port to connect to
                 //Recipients
                 $mail->setFrom('no-reply@project.bappy', 'SSB PHP 02');
                 $mail->addAddress($email);
                 $mail->isHTML();                                  // Set email format to HTML
-                $mail->Subject = '[SSB02] Verify Your Account';
+                $mail->Subject = 'Verify';
                 $mail->Body = 'Dear user, please click the following link to activate your account:<br/>
 <a href="http://project.bappy/projectcrud/CRUD/activate.php?token=' . $email_verification_token . '">Click Here</a>
                 ';
